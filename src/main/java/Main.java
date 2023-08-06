@@ -1,4 +1,6 @@
 import Controller.SocialMediaController;
+import DAO.AccountDAOImpli;
+import Model.Account;
 import io.javalin.Javalin;
 
 /**
@@ -10,5 +12,15 @@ public class Main {
         SocialMediaController controller = new SocialMediaController();
         Javalin app = controller.startAPI();
         app.start(8080);
+
+       Account myAccount = new Account( "m", "kere");
+      //Account fixedAccount = new Account(2, "p", "n");
+
+        AccountDAOImpli account = new AccountDAOImpli();
+
+        account.addAccount(myAccount);
+        account.getAccount();
+        //account.updateAccount(fixedAccount);
+       // account.getAccount();
     }
 }
