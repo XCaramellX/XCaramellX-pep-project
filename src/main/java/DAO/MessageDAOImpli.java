@@ -55,7 +55,7 @@ public class MessageDAOImpli implements MessageDAO{
         try{   
            
              myConnection = ConnectionUtil.getConnection();
-             String stmt = "SELECT * FROM message WHERE message_id = ?";
+             String stmt = "SELECT * WHERE message_id = ?";
              PreparedStatement  select = myConnection.prepareStatement(stmt);
 
              select.setInt(1, message_id);
@@ -64,7 +64,7 @@ public class MessageDAOImpli implements MessageDAO{
 
              while(sResultSet.next()){
                     
-                    int messageId = sResultSet.getInt(message_id);
+                    int messageId = sResultSet.getInt(1);
                     int posted_by = sResultSet.getInt(2);
                     String message_text = sResultSet.getString(3);
                     long time_posted_epoch = sResultSet.getLong(4);

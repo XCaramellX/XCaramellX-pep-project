@@ -1,6 +1,9 @@
 import Controller.SocialMediaController;
 import DAO.AccountDAOImpli;
+import DAO.MessageDAO;
+import DAO.MessageDAOImpli;
 import Model.Account;
+import Model.Message;
 import io.javalin.Javalin;
 
 /**
@@ -13,7 +16,7 @@ public class Main {
         Javalin app = controller.startAPI();
         app.start(8080);
 
-       Account myAccount = new Account( "m", "kere");
+      /*  Account myAccount = new Account( "m", "kere");
       Account fixedAccount = new Account(2, "p", "n");
 
         AccountDAOImpli account = new AccountDAOImpli();
@@ -23,7 +26,15 @@ public class Main {
         account.updateAccount(fixedAccount);
         account.getAccounts();
 
-       account.deleteAccount(fixedAccount);
+       account.deleteAccount(fixedAccount); */
+
+       Message myMessage = new Message(2, 2, "lp", 890);
+
+       MessageDAO messages = new MessageDAOImpli();
+
+       messages.getMessageById(1);
+
+       
        
     }
 }
