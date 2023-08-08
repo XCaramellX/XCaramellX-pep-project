@@ -6,7 +6,7 @@ public interface AccountDAO {
     List<Account> getAccounts();
     
     void addAccount(Account account);
-    void updateAccount(Account account);
+    void updateAccount(int id, Account account);
     void deleteAccount(Account account);
     
 }

@@ -55,7 +55,7 @@ public class MessageDAOImpli implements MessageDAO{
         try{   
            
              myConnection = ConnectionUtil.getConnection();
-             String stmt = "SELECT * WHERE message_id = ?";
+             String stmt = "SELECT * message WHERE message_id = ?";
              PreparedStatement  select = myConnection.prepareStatement(stmt);
 
              select.setInt(1, messageId);

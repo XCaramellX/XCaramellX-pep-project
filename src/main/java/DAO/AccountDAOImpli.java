@@ -66,7 +66,7 @@ public class AccountDAOImpli implements AccountDAO{
         }
 
     };
-    public void updateAccount(Account account){
+    public void updateAccount(int id, Account account){
 
         Connection myConnection = null;
         try{
@@ -76,7 +76,8 @@ public class AccountDAOImpli implements AccountDAO{
 
             updateStmt.setString(1, account.getUsername());
             updateStmt.setString(2, account.getPassword());
-            updateStmt.setInt(3, account.getAccount_id());
+            updateStmt.setInt(3, id);
+           
 
             updateStmt.executeUpdate();
 
