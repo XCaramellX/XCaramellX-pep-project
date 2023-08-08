@@ -48,7 +48,7 @@ public class MessageDAOImpli implements MessageDAO{
     }
 
     @Override
-    public List<Message> getMessageById(int message_id) {
+    public List<Message> getMessageById(int messageId) {
         List<Message> allMessages = new ArrayList<>();
 
         Connection myConnection = null;
@@ -58,18 +58,18 @@ public class MessageDAOImpli implements MessageDAO{
              String stmt = "SELECT * WHERE message_id = ?";
              PreparedStatement  select = myConnection.prepareStatement(stmt);
 
-             select.setInt(1, message_id);
+             select.setInt(1, messageId);
              
              ResultSet sResultSet = select.executeQuery();
 
              while(sResultSet.next()){
                     
-                    int messageId = sResultSet.getInt(1);
+                    int id = sResultSet.getInt(1);
                     int posted_by = sResultSet.getInt(2);
                     String message_text = sResultSet.getString(3);
                     long time_posted_epoch = sResultSet.getLong(4);
 
-                    Message newMessage = new Message(messageId, posted_by, message_text, time_posted_epoch);
+                    Message newMessage = new Message(id, posted_by, message_text, time_posted_epoch);
                     
                     allMessages.add(newMessage);
              }
