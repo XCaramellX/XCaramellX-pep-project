@@ -14,13 +14,16 @@ public class Main {
         app.start(8080);
 
        Account myAccount = new Account( "m", "kere");
-      //Account fixedAccount = new Account(2, "p", "n");
+      Account fixedAccount = new Account(2, "p", "n");
 
         AccountDAOImpli account = new AccountDAOImpli();
 
         account.addAccount(myAccount);
-        account.getAccount();
-        //account.updateAccount(fixedAccount);
-       // account.getAccount();
+        account.getAccounts();
+        account.updateAccount(fixedAccount);
+        account.getAccounts();
+
+       account.deleteAccount(fixedAccount);
+       
     }
 }
