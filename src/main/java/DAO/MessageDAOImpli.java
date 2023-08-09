@@ -12,10 +12,10 @@ import Util.ConnectionUtil;
 
 
 public class MessageDAOImpli implements MessageDAO{
-
+    List<Message> allMessages = new ArrayList<>();
     @Override
     public List<Message> getMessages() {
-        List<Message> allMessages = new ArrayList<>();
+        
 
         Connection myConnection = null;
         try{   
@@ -131,12 +131,12 @@ public class MessageDAOImpli implements MessageDAO{
         try{
             myConnection = ConnectionUtil.getConnection();
             String stmt = "DELETE message WHERE message_id = ?";
-            PreparedStatement updateStmt = myConnection.prepareStatement(stmt);
+            PreparedStatement deleteStmt = myConnection.prepareStatement(stmt);
 
             
-            updateStmt.setInt(1, message.getMessage_id());
+            deleteStmt.setInt(1, message.getMessage_id());
 
-            updateStmt.executeUpdate();
+            deleteStmt.executeUpdate();
 
             System.out.println("Successfully deleted " + 1 + " message");
         }catch(SQLException e){
@@ -150,12 +150,12 @@ public class MessageDAOImpli implements MessageDAO{
         try{
             myConnection = ConnectionUtil.getConnection();
             String stmt = "DELETE message WHERE message_id = ?";
-            PreparedStatement updateStmt = myConnection.prepareStatement(stmt);
+            PreparedStatement deleteStmt = myConnection.prepareStatement(stmt);
 
         
-            updateStmt.setInt(1, message_id);
+            deleteStmt.setInt(1, message_id);
 
-            updateStmt.executeUpdate();
+            deleteStmt.executeUpdate();
 
             System.out.println("Successfully deleted " + 1 + " message");
         }catch(SQLException e){

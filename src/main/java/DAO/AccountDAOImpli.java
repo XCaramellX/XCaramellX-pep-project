@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import Util.ConnectionUtil;
 
 public class AccountDAOImpli implements AccountDAO{
+    
 
     public List<Account> getAccounts(){
         List<Account> allAccounts = new ArrayList<>();
-
         Connection myConnection = null;
         try{   
            
@@ -91,13 +91,14 @@ public class AccountDAOImpli implements AccountDAO{
         try{
             myConnection = ConnectionUtil.getConnection();
             String stmt = "DELETE FROM account WHERE account_id = ?";
-            PreparedStatement updateStmt = myConnection.prepareStatement(stmt);
+            PreparedStatement deleteStmt = myConnection.prepareStatement(stmt);
 
             
-            updateStmt.setInt(1, account.getAccount_id());
-
-            updateStmt.executeUpdate();
-
+            deleteStmt.setInt(1, account.getAccount_id());
+           
+            deleteStmt.executeUpdate();
+            
+            
             System.out.println("Successfully deleted " + 1 + " account!");
         }catch(SQLException e){
             e.printStackTrace();

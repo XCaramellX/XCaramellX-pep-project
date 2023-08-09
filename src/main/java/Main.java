@@ -27,6 +27,7 @@ public class Main {
         account.getAccounts();
 
       account.deleteAccount(myAccount); 
+      account.getAccounts();
       //account.getAccounts();
      /*  Message myMessage = new Message(2, 2, "lp", 890);
 
