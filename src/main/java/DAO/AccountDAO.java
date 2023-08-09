@@ -7,6 +7,6 @@ public interface AccountDAO {
     
     void addAccount(Account account);
     void updateAccount(int id, Account account);
-    void deleteAccount(Account account);
+    void deleteAccount(int account_id);
     
 }

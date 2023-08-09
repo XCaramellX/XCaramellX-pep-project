@@ -1,4 +1,5 @@
 import Controller.SocialMediaController;
+import DAO.AccountDAO;
 import DAO.AccountDAOImpli;
 import DAO.MessageDAO;
 import DAO.MessageDAOImpli;
@@ -17,24 +18,27 @@ public class Main {
         app.start(8080);
 
         Account myAccount = new Account( "m", "kere");
-      Account fixedAccount = new Account( "p", "n");
+        Account fixedAccount = new Account( "p", "n");
 
-        AccountDAOImpli account = new AccountDAOImpli();
+        AccountDAO account = new AccountDAOImpli();
 
         account.addAccount(myAccount);
         account.getAccounts();
-        account.updateAccount(2, fixedAccount);
-        account.getAccounts();
+       // account.updateAccount(2, fixedAccount);
+        //account.getAccounts();
 
-      account.deleteAccount(myAccount); 
-      account.getAccounts();
-      //account.getAccounts();
-     /*  Message myMessage = new Message(2, 2, "lp", 890);
+      //account.deleteAccount(2); 
+      //account.getAccounts(); 
+     
+       Message myMessage = new Message(2, 2, "lp", 890);
 
        MessageDAO messages = new MessageDAOImpli();
 
        messages.getMessageById(1); 
-*/  
+       messages.addMessage(myMessage);
+       messages.getMessages();
+       messages.getMessageById(2);
+
        
        
     }

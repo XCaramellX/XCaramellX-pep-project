@@ -10,7 +10,6 @@ public interface MessageDAO {
     
     void addMessage(Message message);
     void updateMessage(int id, Message message);
-    void deleteMessage(Message message);
     void deleteMessageById(int message_id);
     
 }

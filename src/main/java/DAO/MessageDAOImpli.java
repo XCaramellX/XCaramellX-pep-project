@@ -12,14 +12,16 @@ import Util.ConnectionUtil;
 
 
 public class MessageDAOImpli implements MessageDAO{
-    List<Message> allMessages = new ArrayList<>();
-    @Override
-    public List<Message> getMessages() {
-        
+    
+    Connection myConnection = null;
 
-        Connection myConnection = null;
+    public List<Message> getMessages() {
+        List<Message> allMessages = new ArrayList<>();
+        if(myConnection == null){
+            myConnection = ConnectionUtil.getConnection();
+        } 
         try{   
-           
+             
              myConnection = ConnectionUtil.getConnection();
              String stmt = "SELECT * FROM message";
              PreparedStatement  select = myConnection.prepareStatement(stmt);
@@ -41,17 +43,19 @@ public class MessageDAOImpli implements MessageDAO{
         }catch(SQLException e){
             e.printStackTrace();
             }
+        
             
         System.out.println(allMessages);
         return allMessages;
-        
     }
 
-    @Override
+
     public List<Message> getMessageById(int messageId) {
         List<Message> allMessages = new ArrayList<>();
 
-        Connection myConnection = null;
+        if(myConnection == null){
+            myConnection = ConnectionUtil.getConnection();
+        } 
         try{   
            
              myConnection = ConnectionUtil.getConnection();
@@ -78,14 +82,17 @@ public class MessageDAOImpli implements MessageDAO{
         }catch(SQLException e){
             e.printStackTrace();
             }
+        
             
         System.out.println(allMessages);
         return allMessages;
     }
 
-    @Override
+
     public void addMessage(Message message) {
-        Connection myConnection = null;
+        if(myConnection == null){
+            myConnection = ConnectionUtil.getConnection();
+        } 
         try{
             myConnection = ConnectionUtil.getConnection();
             String stmt = "INSERT INTO message(posted_by, message_text, time_posted_epoch) VALUES(?, ?, ?)";
@@ -99,13 +106,15 @@ public class MessageDAOImpli implements MessageDAO{
         
             System.out.println("Successfully added " + 1 + " message!");
         }catch(SQLException e){
-            e.printStackTrace();
-        }
+                e.printStackTrace();
+            }
     }
 
-    @Override
+
     public void updateMessage(int id, Message message) {
-        Connection myConnection = null;
+        if(myConnection == null){
+            myConnection = ConnectionUtil.getConnection();
+        } 
         try{
             myConnection = ConnectionUtil.getConnection();
             String stmt = "UPDATE message SET posted_by = ?, message_text = ?, time_posted_epoch = ? WHERE message_id = ?";
@@ -121,32 +130,15 @@ public class MessageDAOImpli implements MessageDAO{
 
             System.out.println("Successfully updated " + 1 + " message");
         }catch(SQLException e){
-            e.printStackTrace();
-        }
+                e.printStackTrace();
+            }
     }
 
-    @Override
-    public void deleteMessage(Message message) {
-        Connection myConnection = null;
-        try{
-            myConnection = ConnectionUtil.getConnection();
-            String stmt = "DELETE message WHERE message_id = ?";
-            PreparedStatement deleteStmt = myConnection.prepareStatement(stmt);
-
-            
-            deleteStmt.setInt(1, message.getMessage_id());
-
-            deleteStmt.executeUpdate();
-
-            System.out.println("Successfully deleted " + 1 + " message");
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-    }
-
-    @Override
+  
     public void deleteMessageById(int message_id) {
-        Connection myConnection = null;
+        if(myConnection == null){
+            myConnection = ConnectionUtil.getConnection();
+        } 
         try{
             myConnection = ConnectionUtil.getConnection();
             String stmt = "DELETE message WHERE message_id = ?";
@@ -159,8 +151,9 @@ public class MessageDAOImpli implements MessageDAO{
 
             System.out.println("Successfully deleted " + 1 + " message");
         }catch(SQLException e){
-            e.printStackTrace();
+                e.printStackTrace();
+            }
         }
-    }
+    
     
 }

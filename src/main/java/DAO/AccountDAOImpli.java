@@ -14,14 +14,16 @@ import java.util.ArrayList;
 import Util.ConnectionUtil;
 
 public class AccountDAOImpli implements AccountDAO{
-    
+    Connection myConnection = null;
 
     public List<Account> getAccounts(){
         List<Account> allAccounts = new ArrayList<>();
-        Connection myConnection = null;
-        try{   
+        
+        if(myConnection == null){
+            myConnection = ConnectionUtil.getConnection();
+        } 
+            try{   
            
-             myConnection = ConnectionUtil.getConnection();
              String stmt = "SELECT * FROM account";
              PreparedStatement  select = myConnection.prepareStatement(stmt);
              ResultSet sResultSet = select.executeQuery();
@@ -42,15 +44,19 @@ public class AccountDAOImpli implements AccountDAO{
         }catch(SQLException e){
             e.printStackTrace();
             }
+        
             
         System.out.println(allAccounts);
         return allAccounts;
     };
     
     public void addAccount(Account account){
-            Connection myConnection = null;
-        try{
+        
+        if(myConnection == null){
             myConnection = ConnectionUtil.getConnection();
+        } 
+        try{
+           
             String stmt = "INSERT INTO account(username, password) VALUES(?, ?)";
             PreparedStatement insertStmt = myConnection.prepareStatement(stmt);
                 
@@ -64,13 +70,16 @@ public class AccountDAOImpli implements AccountDAO{
         }catch(SQLException e){
             e.printStackTrace();
         }
+    
        
     };
     public void updateAccount(int id, Account account){
 
-        Connection myConnection = null;
-        try{
+        if(myConnection == null){
             myConnection = ConnectionUtil.getConnection();
+        } 
+        try{
+           
             String stmt = "UPDATE account SET username = ?, password = ? WHERE account_id = ?";
             PreparedStatement updateStmt = myConnection.prepareStatement(stmt);
 
@@ -83,25 +92,28 @@ public class AccountDAOImpli implements AccountDAO{
 
             System.out.println("Successfully updated " + 1 + " account!");
         }catch(SQLException e){
-            e.printStackTrace();
-        }
+                e.printStackTrace();
+            }
+        
     };
-    public void deleteAccount(Account account){
-        Connection myConnection = null;
-        try{
+    public void deleteAccount(int account_id){
+        if(myConnection == null){
             myConnection = ConnectionUtil.getConnection();
+        } 
+        try{
+           
             String stmt = "DELETE FROM account WHERE account_id = ?";
             PreparedStatement deleteStmt = myConnection.prepareStatement(stmt);
 
             
-            deleteStmt.setInt(1, account.getAccount_id());
+            deleteStmt.setInt(1, account_id);
            
             deleteStmt.executeUpdate();
             
             
             System.out.println("Successfully deleted " + 1 + " account!");
         }catch(SQLException e){
-            e.printStackTrace();
-        }
+                e.printStackTrace();
+            } 
     };
 }
