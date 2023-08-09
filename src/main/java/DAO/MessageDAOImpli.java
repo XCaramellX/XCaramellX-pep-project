@@ -55,7 +55,7 @@ public class MessageDAOImpli implements MessageDAO{
         try{   
            
              myConnection = ConnectionUtil.getConnection();
-             String stmt = "SELECT * message WHERE message_id = ?";
+             String stmt = "SELECT * FROM message WHERE message_id = ?";
              PreparedStatement  select = myConnection.prepareStatement(stmt);
 
              select.setInt(1, messageId);
@@ -85,26 +85,82 @@ public class MessageDAOImpli implements MessageDAO{
 
     @Override
     public void addMessage(Message message) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addMessage'");
+        Connection myConnection = null;
+        try{
+            myConnection = ConnectionUtil.getConnection();
+            String stmt = "INSERT INTO message(posted_by, message_text, time_posted_epoch) VALUES(?, ?, ?)";
+            PreparedStatement insertStmt = myConnection.prepareStatement(stmt);
+                
+            insertStmt.setInt(1, message.getPosted_by());
+            insertStmt.setString(2, message.getMessage_text());
+            insertStmt.setLong(3, message.getTime_posted_epoch());
+
+            insertStmt.executeUpdate();
+        
+            System.out.println("Successfully added " + 1 + " message!");
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void updateMessage(Message message) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateMessage'");
+    public void updateMessage(int id, Message message) {
+        Connection myConnection = null;
+        try{
+            myConnection = ConnectionUtil.getConnection();
+            String stmt = "UPDATE message SET posted_by = ?, message_text = ?, time_posted_epoch = ? WHERE message_id = ?";
+            PreparedStatement updateStmt = myConnection.prepareStatement(stmt);
+
+            updateStmt.setInt(1, message.getPosted_by());
+            updateStmt.setString(2, message.getMessage_text());
+            updateStmt.setLong(3, message.getTime_posted_epoch());
+            updateStmt.setInt(4, id);
+           
+
+            updateStmt.executeUpdate();
+
+            System.out.println("Successfully updated " + 1 + " message");
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void deleteMessage(Message message) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteMessage'");
+        Connection myConnection = null;
+        try{
+            myConnection = ConnectionUtil.getConnection();
+            String stmt = "DELETE message WHERE message_id = ?";
+            PreparedStatement updateStmt = myConnection.prepareStatement(stmt);
+
+            
+            updateStmt.setInt(1, message.getMessage_id());
+
+            updateStmt.executeUpdate();
+
+            System.out.println("Successfully deleted " + 1 + " message");
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void deleteMessageById(int message_id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteMessageById'");
+        Connection myConnection = null;
+        try{
+            myConnection = ConnectionUtil.getConnection();
+            String stmt = "DELETE message WHERE message_id = ?";
+            PreparedStatement updateStmt = myConnection.prepareStatement(stmt);
+
+        
+            updateStmt.setInt(1, message_id);
+
+            updateStmt.executeUpdate();
+
+            System.out.println("Successfully deleted " + 1 + " message");
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
     }
     
 }

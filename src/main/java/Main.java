@@ -16,24 +16,24 @@ public class Main {
         Javalin app = controller.startAPI();
         app.start(8080);
 
-      /*  Account myAccount = new Account( "m", "kere");
-      Account fixedAccount = new Account(2, "p", "n");
+        Account myAccount = new Account( "m", "kere");
+      Account fixedAccount = new Account( "p", "n");
 
         AccountDAOImpli account = new AccountDAOImpli();
 
         account.addAccount(myAccount);
         account.getAccounts();
-        account.updateAccount(fixedAccount);
+        account.updateAccount(2, fixedAccount);
         account.getAccounts();
 
-       account.deleteAccount(fixedAccount); */
-
-       Message myMessage = new Message(2, 2, "lp", 890);
+      account.deleteAccount(myAccount); 
+      account.getAccounts();
+     /*  Message myMessage = new Message(2, 2, "lp", 890);
 
        MessageDAO messages = new MessageDAOImpli();
 
-       messages.getMessageById(1);
-
+       messages.getMessageById(1); 
+*/  
        
        
     }

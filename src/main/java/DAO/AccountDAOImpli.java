@@ -59,12 +59,12 @@ public class AccountDAOImpli implements AccountDAO{
             
 
             insertStmt.executeUpdate();
-
+        
             System.out.println("Successfully added " + 1 + " account!");
         }catch(SQLException e){
             e.printStackTrace();
         }
-
+       
     };
     public void updateAccount(int id, Account account){
 
@@ -90,7 +90,7 @@ public class AccountDAOImpli implements AccountDAO{
         Connection myConnection = null;
         try{
             myConnection = ConnectionUtil.getConnection();
-            String stmt = "DELETE account WHERE account_id = ?";
+            String stmt = "DELETE FROM account WHERE account_id = ?";
             PreparedStatement updateStmt = myConnection.prepareStatement(stmt);
 
             

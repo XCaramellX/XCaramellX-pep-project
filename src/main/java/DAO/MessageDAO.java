@@ -9,7 +9,7 @@ public interface MessageDAO {
     List<Message> getMessageById(int message_id);
     
     void addMessage(Message message);
-    void updateMessage(Message message);
+    void updateMessage(int id, Message message);
     void deleteMessage(Message message);
     void deleteMessageById(int message_id);
     
