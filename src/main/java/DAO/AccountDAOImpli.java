@@ -153,29 +153,16 @@ public class AccountDAOImpli implements AccountDAO{
         } 
         try{
            
-            String stmt = "CREATE TRIGGER get_account BEFORE DELETE ON account FOR EACH ROW SELECT * FROM account WHERE account_id = ?";
+            String stmt = "DELETE FROM account WHERE account_id = ?";
             PreparedStatement deleteStmt = myConnection.prepareStatement(stmt);
 
             
             deleteStmt.setInt(1, account_id);
             
-            ResultSet dResultSet = deleteStmt.getGeneratedKeys();
+            getAccountById(account_id);
 
             deleteStmt.executeUpdate();
             
-            int generatedKey = (int) dResultSet.getInt(1);
-
-            while(dResultSet.next()){
-                
-                String user = dResultSet.getString(2);
-                String pass = dResultSet.getString(3);
-
-                Account deletedAccount = new Account(generatedKey, user, pass);
-
-                System.out.println("Successfully deleted " + 1 + " account!");
-                
-                return deletedAccount;
-            }
             
         }catch(SQLException e){
                 e.printStackTrace();

@@ -100,7 +100,7 @@ public class MessageDAOImpli implements MessageDAO{
             insertStmt.setString(2, message.getMessage_text());
             insertStmt.setLong(3, message.getTime_posted_epoch());
 
-            insertStmt.executeQuery();
+            insertStmt.executeUpdate();
 
             ResultSet addResultSet = insertStmt.getGeneratedKeys();
         
@@ -155,7 +155,7 @@ public class MessageDAOImpli implements MessageDAO{
         } 
         try{
            
-            String stmt = "DELETE message WHERE message_id = ?";
+            String stmt = "DELETE FROM message WHERE message_id = ?";
             PreparedStatement deleteStmt = myConnection.prepareStatement(stmt);
 
         
