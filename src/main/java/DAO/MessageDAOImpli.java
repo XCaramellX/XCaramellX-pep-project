@@ -49,8 +49,7 @@ public class MessageDAOImpli implements MessageDAO{
     }
 
 
-    public List<Message> getMessageById(int messageId) {
-        List<Message> allMessages = new ArrayList<>();
+    public Message getMessageById(int messageId) {
 
         if(myConnection == null){
             myConnection = ConnectionUtil.getConnection();
@@ -74,7 +73,8 @@ public class MessageDAOImpli implements MessageDAO{
 
                     Message newMessage = new Message(id, posted_by, message_text, time_posted_epoch);
                     
-                    allMessages.add(newMessage);
+                    System.out.println(newMessage.toString());
+                    return newMessage;
              }
 
             
@@ -83,12 +83,12 @@ public class MessageDAOImpli implements MessageDAO{
             }
         
             
-        System.out.println(allMessages);
-        return allMessages;
+       
+        return null;
     }
 
 
-    public void addMessage(Message message) {
+    public Message addMessage(Message message) {
         if(myConnection == null){
             myConnection = ConnectionUtil.getConnection();
         } 
@@ -100,12 +100,27 @@ public class MessageDAOImpli implements MessageDAO{
             insertStmt.setString(2, message.getMessage_text());
             insertStmt.setLong(3, message.getTime_posted_epoch());
 
-            insertStmt.executeUpdate();
+            ResultSet addResultSet = insertStmt.executeQuery();
+
+            while(addResultSet.next()){
+                   
+                   int id = addResultSet.getInt(1);
+                   int posted_by = addResultSet.getInt(2);
+                   String message_text = addResultSet.getString(3);
+                   long time_posted_epoch = addResultSet.getLong(4);
+
+                   Message newMessage = new Message(id, posted_by, message_text, time_posted_epoch);
+                   
+                   System.out.println("Successfully added " + 1 + " message!");
+                   return newMessage;
+            }
         
-            System.out.println("Successfully added " + 1 + " message!");
+            
         }catch(SQLException e){
                 e.printStackTrace();
             }
+
+        return null;
     }
 
 
@@ -133,7 +148,7 @@ public class MessageDAOImpli implements MessageDAO{
     }
 
   
-    public void deleteMessageById(int message_id) {
+    public Message deleteMessageById(int message_id) {
         if(myConnection == null){
             myConnection = ConnectionUtil.getConnection();
         } 
@@ -145,12 +160,30 @@ public class MessageDAOImpli implements MessageDAO{
         
             deleteStmt.setInt(1, message_id);
 
-            deleteStmt.executeUpdate();
+            ResultSet dResultSet = deleteStmt.getResultSet();
+            
+            
 
-            System.out.println("Successfully deleted " + 1 + " message");
+            while(dResultSet.next()){
+                   
+                   int id = dResultSet.getInt(1);
+                   int posted_by = dResultSet.getInt(2);
+                   String message_text = dResultSet.getString(3);
+                   long time_posted_epoch = dResultSet.getLong(4);
+
+                   Message newMessage = new Message(id, posted_by, message_text, time_posted_epoch);
+                   
+                   System.out.println("Successfully deleted " + 1 + " message");
+                   deleteStmt.executeQuery();
+                   return newMessage;
+            }
+
+            
         }catch(SQLException e){
                 e.printStackTrace();
             }
+
+            return null;
         }
     
     

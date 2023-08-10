@@ -50,7 +50,43 @@ public class AccountDAOImpli implements AccountDAO{
         return allAccounts;
     };
     
-    public void addAccount(Account account){
+    public Account getAccountById(int account_id){
+        
+        if(myConnection == null){
+            myConnection = ConnectionUtil.getConnection();
+        } 
+            try{   
+           
+             String stmt = "SELECT * FROM account WHERE account_id = ?";
+             PreparedStatement  select = myConnection.prepareStatement(stmt);
+
+             select.setInt(1, account_id);
+             ResultSet sResultSet = select.executeQuery();
+
+             while(sResultSet.next()){
+                    
+                    int id = sResultSet.getInt(1);
+                    String user = sResultSet.getString(2);
+                    String pass = sResultSet.getString(3);
+
+                    Account newAccount = new Account(id, user, pass);
+
+                    System.out.println(newAccount.toString());
+                    
+                    return newAccount;
+             }
+
+            
+        }catch(SQLException e){
+            e.printStackTrace();
+            }
+        
+            
+        
+        return null;
+    };
+
+    public Account addAccount(Account account){
         
         if(myConnection == null){
             myConnection = ConnectionUtil.getConnection();
@@ -64,14 +100,25 @@ public class AccountDAOImpli implements AccountDAO{
             insertStmt.setString(2, account.getPassword());
             
 
-            insertStmt.executeUpdate();
-        
-            System.out.println("Successfully added " + 1 + " account!");
+            ResultSet addResultSet = insertStmt.executeQuery();
+
+            while(addResultSet.next()){
+                
+                int id = addResultSet.getInt(1);
+                String user = addResultSet.getString(2);
+                String pass = addResultSet.getString(3);
+
+                Account newAccount = new Account(id, user, pass);
+
+                System.out.println("Successfully added " + 1 + " account!");
+                return newAccount;
+            }
+
         }catch(SQLException e){
             e.printStackTrace();
         }
     
-       
+       return null;
     };
     public void updateAccount(int id, Account account){
 
@@ -96,7 +143,7 @@ public class AccountDAOImpli implements AccountDAO{
             }
         
     };
-    public void deleteAccount(int account_id){
+    public Account deleteAccount(int account_id){
         if(myConnection == null){
             myConnection = ConnectionUtil.getConnection();
         } 
@@ -110,10 +157,24 @@ public class AccountDAOImpli implements AccountDAO{
            
             deleteStmt.executeUpdate();
             
+            ResultSet dResultSet = deleteStmt.executeQuery();
+
+            while(dResultSet.next()){
+                
+                int id = dResultSet.getInt(1);
+                String user = dResultSet.getString(2);
+                String pass = dResultSet.getString(3);
+
+                Account deletedAccount = new Account(id, user, pass);
+
+                System.out.println("Successfully deleted " + 1 + " account!");
+                return deletedAccount;
+            }
             
-            System.out.println("Successfully deleted " + 1 + " account!");
         }catch(SQLException e){
                 e.printStackTrace();
             } 
+
+        return null;
     };
 }

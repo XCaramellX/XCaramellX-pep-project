@@ -6,10 +6,10 @@ import java.util.List;
 public interface MessageDAO {
 
     List<Message> getMessages();
-    List<Message> getMessageById(int message_id);
+    Message getMessageById(int message_id);
     
-    void addMessage(Message message);
+    Message addMessage(Message message);
     void updateMessage(int id, Message message);
-    void deleteMessageById(int message_id);
+    Message deleteMessageById(int message_id);
     
 }

@@ -4,9 +4,10 @@ import java.util.List;
 
 public interface AccountDAO {
     List<Account> getAccounts();
+    Account getAccountById(int account_id);
     
-    void addAccount(Account account);
+    Account addAccount(Account account);
     void updateAccount(int id, Account account);
-    void deleteAccount(int account_id);
+    Account deleteAccount(int account_id);
     
 }
