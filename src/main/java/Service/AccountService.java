@@ -5,7 +5,7 @@ import DAO.AccountDAO;
 import DAO.AccountDAOImpli;
 
 public class AccountService {
-    
+
     private AccountDAO accountDAO;
 
 
@@ -17,8 +17,12 @@ public class AccountService {
         return accountDAO.getAccounts();
     }
 
+    public Account getAccountById(int account_id){
+        return accountDAO.getAccountById(account_id);
+    }
+
     public Account addAccount(Account account){
-        if(account.getUsername() != null && account.getUsername().length() <= 4){
+        if(account.getUsername() != null && account.getUsername().length() <= 4 && account != accountDAO.getAccountById(account.getAccount_id())){
            return accountDAO.addAccount(account);
         }
 

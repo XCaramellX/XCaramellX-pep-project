@@ -18,18 +18,18 @@ public class Main {
         Javalin app = controller.startAPI();
         app.start(8080);
 
-        Account myAccount = new Account( "m", "kere");
+      Account myAccount = new Account( "m", "kere");
         Account fixedAccount = new Account( "p", "n");
 
         AccountDAO account = new AccountDAOImpli();
 
-       account.addAccount(myAccount);
+      // account.addAccount(myAccount);
        account.getAccounts();
-       account.updateAccount(2, fixedAccount);
-       account.getAccounts();
+      // account.updateAccount(2, fixedAccount);
+       //account.getAccounts();
       
-      account.deleteAccount(2); 
-      account.getAccounts(); 
+      //account.deleteAccount(2); 
+     // account.getAccounts(); 
      
        Message myMessage = new Message(2, 2, "lp", 890);
 
