@@ -23,28 +23,32 @@ public class Main {
 
         AccountDAO account = new AccountDAOImpli();
 
-        account.addAccount(myAccount);
-        account.getAccounts();
-       // account.updateAccount(2, fixedAccount);
-        //account.getAccounts();
-
+       account.addAccount(myAccount);
+       account.getAccounts();
+       account.updateAccount(2, fixedAccount);
+       account.getAccounts();
+      
       account.deleteAccount(2); 
-      //account.getAccounts(); 
+      account.getAccounts(); 
      
        Message myMessage = new Message(2, 2, "lp", 890);
 
        MessageDAO messages = new MessageDAOImpli();
 
-     /* messages.getMessageById(1); 
+      /* messages.getMessageById(1); 
        messages.addMessage(myMessage);
        messages.getMessages();
        messages.getMessageById(2); 
+       messages.deleteMessageById(2);
+       messages.getMessages(); */
 
-       MessageService myMessageService = new MessageService();
+      /* MessageService myMessageService = new MessageService();
         myMessageService.addMessage(2, myMessage);
        myMessageService.getAllMessages();
 
        */
+
+       
        
     }
 }

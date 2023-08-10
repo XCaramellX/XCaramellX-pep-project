@@ -161,24 +161,9 @@ public class MessageDAOImpli implements MessageDAO{
         
             deleteStmt.setInt(1, message_id);
 
-            ResultSet dResultSet = deleteStmt.getResultSet();
-            
-            
+            getMessageById(message_id);
 
-            while(dResultSet.next()){
-                   
-                   int id = dResultSet.getInt(1);
-                   int posted_by = dResultSet.getInt(2);
-                   String message_text = dResultSet.getString(3);
-                   long time_posted_epoch = dResultSet.getLong(4);
-
-                   Message newMessage = new Message(id, posted_by, message_text, time_posted_epoch);
-                   
-                   System.out.println("Successfully deleted " + 1 + " message");
-                   deleteStmt.executeQuery();
-                   return newMessage;
-            }
-
+            deleteStmt.executeUpdate();
             
         }catch(SQLException e){
                 e.printStackTrace();

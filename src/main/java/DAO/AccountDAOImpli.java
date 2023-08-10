@@ -112,7 +112,7 @@ public class AccountDAOImpli implements AccountDAO{
                 String pass = addResultSet.getString(3);
 
                 Account newAccount = new Account(generatedKey, user, pass);
-
+                
                 return newAccount;
             }
 
