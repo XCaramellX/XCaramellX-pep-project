@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import Util.ConnectionUtil;
 
 public class AccountDAOImpli implements AccountDAO{
-    Connection myConnection = null;
+   private Connection myConnection = null;
 
     public List<Account> getAccounts(){
         List<Account> allAccounts = new ArrayList<>();

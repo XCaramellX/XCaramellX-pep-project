@@ -13,7 +13,7 @@ import Util.ConnectionUtil;
 
 public class MessageDAOImpli implements MessageDAO{
     
-    Connection myConnection = null;
+  private Connection myConnection = null;
 
     public List<Message> getMessages() {
         List<Message> allMessages = new ArrayList<>();
@@ -22,7 +22,6 @@ public class MessageDAOImpli implements MessageDAO{
         } 
         try{   
              
-             myConnection = ConnectionUtil.getConnection();
              String stmt = "SELECT * FROM message";
              PreparedStatement  select = myConnection.prepareStatement(stmt);
              ResultSet sResultSet = select.executeQuery();
@@ -58,7 +57,7 @@ public class MessageDAOImpli implements MessageDAO{
         } 
         try{   
            
-             myConnection = ConnectionUtil.getConnection();
+            
              String stmt = "SELECT * FROM message WHERE message_id = ?";
              PreparedStatement  select = myConnection.prepareStatement(stmt);
 
@@ -94,7 +93,6 @@ public class MessageDAOImpli implements MessageDAO{
             myConnection = ConnectionUtil.getConnection();
         } 
         try{
-            myConnection = ConnectionUtil.getConnection();
             String stmt = "INSERT INTO message(posted_by, message_text, time_posted_epoch) VALUES(?, ?, ?)";
             PreparedStatement insertStmt = myConnection.prepareStatement(stmt);
                 
@@ -116,7 +114,7 @@ public class MessageDAOImpli implements MessageDAO{
             myConnection = ConnectionUtil.getConnection();
         } 
         try{
-            myConnection = ConnectionUtil.getConnection();
+           
             String stmt = "UPDATE message SET posted_by = ?, message_text = ?, time_posted_epoch = ? WHERE message_id = ?";
             PreparedStatement updateStmt = myConnection.prepareStatement(stmt);
 
@@ -140,7 +138,7 @@ public class MessageDAOImpli implements MessageDAO{
             myConnection = ConnectionUtil.getConnection();
         } 
         try{
-            myConnection = ConnectionUtil.getConnection();
+           
             String stmt = "DELETE message WHERE message_id = ?";
             PreparedStatement deleteStmt = myConnection.prepareStatement(stmt);
 

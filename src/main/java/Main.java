@@ -3,6 +3,7 @@ import DAO.AccountDAO;
 import DAO.AccountDAOImpli;
 import DAO.MessageDAO;
 import DAO.MessageDAOImpli;
+import Service.MessageService;
 import Model.Account;
 import Model.Message;
 import io.javalin.Javalin;
@@ -34,12 +35,14 @@ public class Main {
 
        MessageDAO messages = new MessageDAOImpli();
 
-       messages.getMessageById(1); 
+     /* messages.getMessageById(1); 
        messages.addMessage(myMessage);
        messages.getMessages();
-       messages.getMessageById(2);
+       messages.getMessageById(2); */
 
-       
+       MessageService myMessageService = new MessageService();
+        myMessageService.addMessage(2, myMessage);
+       myMessageService.getAllMessages();
        
     }
 }
