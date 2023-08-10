@@ -100,19 +100,23 @@ public class AccountDAOImpli implements AccountDAO{
             insertStmt.setString(2, account.getPassword());
             
 
-            ResultSet addResultSet = insertStmt.executeQuery();
+            insertStmt.executeUpdate();
+
+            ResultSet addResultSet = insertStmt.getGeneratedKeys();
+            
 
             while(addResultSet.next()){
-                
-                int id = addResultSet.getInt(1);
+
+                int generatedKey = (int)addResultSet.getInt(1);
                 String user = addResultSet.getString(2);
                 String pass = addResultSet.getString(3);
 
-                Account newAccount = new Account(id, user, pass);
+                Account newAccount = new Account(generatedKey, user, pass);
 
-                System.out.println("Successfully added " + 1 + " account!");
                 return newAccount;
             }
+
+            
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -149,25 +153,27 @@ public class AccountDAOImpli implements AccountDAO{
         } 
         try{
            
-            String stmt = "DELETE FROM account WHERE account_id = ?";
+            String stmt = "CREATE TRIGGER get_account BEFORE DELETE ON account FOR EACH ROW SELECT * FROM account WHERE account_id = ?";
             PreparedStatement deleteStmt = myConnection.prepareStatement(stmt);
 
             
             deleteStmt.setInt(1, account_id);
-           
+            
+            ResultSet dResultSet = deleteStmt.getGeneratedKeys();
+
             deleteStmt.executeUpdate();
             
-            ResultSet dResultSet = deleteStmt.executeQuery();
+            int generatedKey = (int) dResultSet.getInt(1);
 
             while(dResultSet.next()){
                 
-                int id = dResultSet.getInt(1);
                 String user = dResultSet.getString(2);
                 String pass = dResultSet.getString(3);
 
-                Account deletedAccount = new Account(id, user, pass);
+                Account deletedAccount = new Account(generatedKey, user, pass);
 
                 System.out.println("Successfully deleted " + 1 + " account!");
+                
                 return deletedAccount;
             }
             

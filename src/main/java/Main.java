@@ -28,7 +28,7 @@ public class Main {
        // account.updateAccount(2, fixedAccount);
         //account.getAccounts();
 
-      //account.deleteAccount(2); 
+      account.deleteAccount(2); 
       //account.getAccounts(); 
      
        Message myMessage = new Message(2, 2, "lp", 890);
@@ -38,11 +38,13 @@ public class Main {
      /* messages.getMessageById(1); 
        messages.addMessage(myMessage);
        messages.getMessages();
-       messages.getMessageById(2); */
+       messages.getMessageById(2); 
 
        MessageService myMessageService = new MessageService();
         myMessageService.addMessage(2, myMessage);
        myMessageService.getAllMessages();
+
+       */
        
     }
 }

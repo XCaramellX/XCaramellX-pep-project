@@ -100,18 +100,19 @@ public class MessageDAOImpli implements MessageDAO{
             insertStmt.setString(2, message.getMessage_text());
             insertStmt.setLong(3, message.getTime_posted_epoch());
 
-            ResultSet addResultSet = insertStmt.executeQuery();
+            insertStmt.executeQuery();
 
+            ResultSet addResultSet = insertStmt.getGeneratedKeys();
+        
             while(addResultSet.next()){
                    
-                   int id = addResultSet.getInt(1);
+                   int generatedKey = (int)addResultSet.getInt(1);
                    int posted_by = addResultSet.getInt(2);
                    String message_text = addResultSet.getString(3);
                    long time_posted_epoch = addResultSet.getLong(4);
 
-                   Message newMessage = new Message(id, posted_by, message_text, time_posted_epoch);
+                   Message newMessage = new Message(generatedKey, posted_by, message_text, time_posted_epoch);
                    
-                   System.out.println("Successfully added " + 1 + " message!");
                    return newMessage;
             }
         
