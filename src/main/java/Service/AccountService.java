@@ -17,30 +17,12 @@ public class AccountService {
         return accountDAO.getAccounts();
     }
 
-    public Account getAccountById(int account_id){
-        return accountDAO.getAccountById(account_id);
+    public Account addAccountByUserPass(Account account){
+        return accountDAO.addAccountByUserPass(account);
     }
 
     public Account addAccount(Account account){
         return accountDAO.addAccount(account);
-    }
-
-    public Account updateAccount(int account_id, Account account){
-        if(account == null){
-            return null;
-        }
-        
-        accountDAO.updateAccount(account_id, account);
-        return accountDAO.getAccountById(account_id);
-    }
-
-    public Account deleteAccount(int account_id){
-
-        if(accountDAO.getAccountById(account_id) == null){
-            return null;
-        }
-        
-        return accountDAO.deleteAccount(account_id);
     }
 
 }

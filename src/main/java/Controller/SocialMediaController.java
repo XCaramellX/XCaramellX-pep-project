@@ -14,7 +14,7 @@ import io.javalin.http.Context;
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
 public class SocialMediaController {
-    AccountService accountService;
+  private AccountService accountService;
 
     public SocialMediaController(){
        accountService = new AccountService();
@@ -27,7 +27,7 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.post("/register", this::registerHandler);
-
+        app.post("/login", this::loginHandler);
         return app;
     }
 
@@ -46,6 +46,19 @@ public class SocialMediaController {
             ctx.json(registerMapper.writeValueAsString(addAccount));
         }
        
+    }
+
+    private void loginHandler(Context ctx) throws JsonProcessingException{
+        ObjectMapper loginMapper = new ObjectMapper();
+        Account account = loginMapper.readValue(ctx.body(), Account.class);
+        Account addAccount = accountService.addAccountByUserPass(account);
+
+        if(addAccount == null){
+            ctx.status(401);
+        }else{
+            ctx.json(loginMapper.writeValueAsString(addAccount));
+        }
+
     }
 
 

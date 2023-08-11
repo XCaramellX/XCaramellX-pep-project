@@ -49,30 +49,42 @@ public class AccountDAOImpli implements AccountDAO{
         return allAccounts;
     };
     
-    public Account getAccountById(int account_id){
+    public Account addAccountByUserPass(Account account){
         
         if(myConnection == null){
             myConnection = ConnectionUtil.getConnection();
         } 
             try{   
            
-             String stmt = "SELECT * FROM account WHERE account_id = ?";
-             PreparedStatement  select = myConnection.prepareStatement(stmt);
+            // String stmt = "INSERT INTO account(username, password) VALUES(?, ?)";
+             String compareStmt = "SELECT * FROM account WHERE username = ? AND password = ?";
+            // PreparedStatement  insertStmt = myConnection.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement userStmt = myConnection.prepareStatement(compareStmt);
 
-             select.setInt(1, account_id);
-             ResultSet sResultSet = select.executeQuery();
+           //  insertStmt.setString(1, account.getUsername());
+            // insertStmt.setString(2, account.getPassword());
 
-             while(sResultSet.next()){
+             userStmt.setString(1, account.getUsername());
+             userStmt.setString(2, account.getPassword());
+            
+            
+            // insertStmt.executeUpdate();
+             
+           //  ResultSet addResultSet = insertStmt.getGeneratedKeys();
+            
+           ResultSet userSet = userStmt.executeQuery();
+            
+             while(userSet.next()){
+                
+                    if(userSet.getString(1).equals())
+                        int generatedKey = addResultSet.getInt(1);
+                        String user = addResultSet.getString(2);
+                        String pass = addResultSet.getString(3);
+
+                        Account newAccount = new Account(generatedKey, user, pass);
                     
-                    int id = sResultSet.getInt(1);
-                    String user = sResultSet.getString(2);
-                    String pass = sResultSet.getString(3);
-
-                    Account newAccount = new Account(id, user, pass);
-
-                    System.out.println(newAccount.toString());
-                    
-                    return newAccount;
+                        return newAccount;
+    
              }
 
             
@@ -85,6 +97,7 @@ public class AccountDAOImpli implements AccountDAO{
         return null;
     };
 
+
     public Account addAccount(Account account){
         
         if(myConnection == null){
@@ -93,35 +106,24 @@ public class AccountDAOImpli implements AccountDAO{
         try{
            
             String stmt = "INSERT INTO account(username, password) VALUES(?, ?)";
-            String compareStmt = "SELECT * FROM account WHERE username = ?";
             PreparedStatement insertStmt = myConnection.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
-            PreparedStatement userStmt = myConnection.prepareStatement(compareStmt);
 
             insertStmt.setString(1, account.getUsername());
             insertStmt.setString(2, account.getPassword());
             
-            userStmt.setString(1, account.getUsername());
-
+            insertStmt.executeUpdate();
             ResultSet addResultSet = insertStmt.getGeneratedKeys();
-            ResultSet userSet = userStmt.executeQuery();
-            if(userSet.next()){
-                if(!account.getUsername().equals(userSet.getString("username"))){
-                    while(addResultSet.next()){
-                        if(!account.getUsername().isBlank() && account.getUsername().length() <= 4){
 
-                    insertStmt.executeUpdate();
+            while(addResultSet.next()){
+                if(!account.getUsername().isBlank() && account.getUsername().length() <= 4){
                     int generatedKey = (int)addResultSet.getInt(1);
                     String user = account.getUsername();
                     String pass = account.getPassword();
 
                     Account newAccount = new Account(generatedKey, user, pass);
                     return newAccount;
-                        }
-                    }
-                }
+                } 
             }
-
-            
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -129,50 +131,5 @@ public class AccountDAOImpli implements AccountDAO{
     
        return null;
     };
-    public void updateAccount(int id, Account account){
-
-        if(myConnection == null){
-            myConnection = ConnectionUtil.getConnection();
-        } 
-        try{
-           
-            String stmt = "UPDATE account SET username = ?, password = ? WHERE account_id = ?";
-            PreparedStatement updateStmt = myConnection.prepareStatement(stmt);
-
-            updateStmt.setString(1, account.getUsername());
-            updateStmt.setString(2, account.getPassword());
-            updateStmt.setInt(3, id);
-           
-
-            updateStmt.executeUpdate();
-
-            System.out.println("Successfully updated " + 1 + " account!");
-        }catch(SQLException e){
-                e.printStackTrace();
-            }
-        
-    };
-    public Account deleteAccount(int account_id){
-        if(myConnection == null){
-            myConnection = ConnectionUtil.getConnection();
-        } 
-        try{
-           
-            String stmt = "DELETE FROM account WHERE account_id = ?";
-            PreparedStatement deleteStmt = myConnection.prepareStatement(stmt);
-
-            
-            deleteStmt.setInt(1, account_id);
-            
-            getAccountById(account_id);
-
-            deleteStmt.executeUpdate();
-            
-            
-        }catch(SQLException e){
-                e.printStackTrace();
-            } 
-
-        return null;
-    };
+    
 }
