@@ -51,7 +51,7 @@ public class SocialMediaController {
     private void loginHandler(Context ctx) throws JsonProcessingException{
         ObjectMapper loginMapper = new ObjectMapper();
         Account account = loginMapper.readValue(ctx.body(), Account.class);
-        Account addAccount = accountService.addAccountByUserPass(account);
+        Account addAccount = accountService.getAccountByUserPass(account);
 
         if(addAccount == null){
             ctx.status(401);
