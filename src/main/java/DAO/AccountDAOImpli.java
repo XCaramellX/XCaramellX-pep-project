@@ -56,27 +56,28 @@ public class AccountDAOImpli implements AccountDAO{
         } 
             try{   
            
-            // String stmt = "INSERT INTO account(username, password) VALUES(?, ?)";
+             String stmt = "INSERT INTO account(username, password) VALUES(?, ?)";
              String compareStmt = "SELECT * FROM account WHERE username = ? AND password = ?";
-            // PreparedStatement  insertStmt = myConnection.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement  insertStmt = myConnection.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement userStmt = myConnection.prepareStatement(compareStmt);
 
-           //  insertStmt.setString(1, account.getUsername());
-            // insertStmt.setString(2, account.getPassword());
+             insertStmt.setString(1, account.getUsername());
+             insertStmt.setString(2, account.getPassword());
 
              userStmt.setString(1, account.getUsername());
              userStmt.setString(2, account.getPassword());
             
-            
-            // insertStmt.executeUpdate();
              
-           //  ResultSet addResultSet = insertStmt.getGeneratedKeys();
+             insertStmt.executeUpdate();
+             
+             ResultSet addResultSet = insertStmt.getGeneratedKeys();
             
-           ResultSet userSet = userStmt.executeQuery();
+             ResultSet userSet = userStmt.executeQuery();
             
-             while(userSet.next()){
+             while(addResultSet.next()){
                 
-                    if(userSet.getString(1).equals())
+                    if(addResultSet.getString(1).equals(userSet.getString(1)) && 
+                    addResultSet.getString(2).equals(userSet.getString(2))){
                         int generatedKey = addResultSet.getInt(1);
                         String user = addResultSet.getString(2);
                         String pass = addResultSet.getString(3);
@@ -84,7 +85,7 @@ public class AccountDAOImpli implements AccountDAO{
                         Account newAccount = new Account(generatedKey, user, pass);
                     
                         return newAccount;
-    
+                    }
              }
 
             
