@@ -2,8 +2,7 @@ package DAO;
 import Model.Account;
 
 import java.sql.SQLException;
-
-
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -94,26 +93,32 @@ public class AccountDAOImpli implements AccountDAO{
         try{
            
             String stmt = "INSERT INTO account(username, password) VALUES(?, ?)";
-            PreparedStatement insertStmt = myConnection.prepareStatement(stmt);
-                
+            String compareStmt = "SELECT * FROM account WHERE username = ?";
+            PreparedStatement insertStmt = myConnection.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement userStmt = myConnection.prepareStatement(compareStmt);
+
             insertStmt.setString(1, account.getUsername());
             insertStmt.setString(2, account.getPassword());
             
-
-            insertStmt.executeUpdate();
+            userStmt.setString(1, account.getUsername());
 
             ResultSet addResultSet = insertStmt.getGeneratedKeys();
-            
+            ResultSet userSet = userStmt.executeQuery();
+            if(userSet.next()){
+                if(!account.getUsername().equals(userSet.getString("username"))){
+                    while(addResultSet.next()){
+                        if(!account.getUsername().isBlank() && account.getUsername().length() <= 4){
 
-            while(addResultSet.next()){
+                    insertStmt.executeUpdate();
+                    int generatedKey = (int)addResultSet.getInt(1);
+                    String user = account.getUsername();
+                    String pass = account.getPassword();
 
-                int generatedKey = (int)addResultSet.getInt(1);
-                String user = addResultSet.getString(2);
-                String pass = addResultSet.getString(3);
-
-                Account newAccount = new Account(generatedKey, user, pass);
-                
-                return newAccount;
+                    Account newAccount = new Account(generatedKey, user, pass);
+                    return newAccount;
+                        }
+                    }
+                }
             }
 
             

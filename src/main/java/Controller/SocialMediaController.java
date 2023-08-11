@@ -17,7 +17,7 @@ public class SocialMediaController {
     AccountService accountService;
 
     public SocialMediaController(){
-        accountService = new AccountService();
+       accountService = new AccountService();
     }
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
@@ -39,11 +39,10 @@ public class SocialMediaController {
         ObjectMapper registerMapper = new ObjectMapper();
         Account account = registerMapper.readValue(ctx.body(), Account.class);
         Account addAccount = accountService.addAccount(account);
-
+        
         if(addAccount == null){
             ctx.status(400);
         }else{
-            ctx.status(200);
             ctx.json(registerMapper.writeValueAsString(addAccount));
         }
        

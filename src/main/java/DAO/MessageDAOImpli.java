@@ -3,7 +3,7 @@ import Model.Message;
 import java.util.List;
 
 import java.sql.SQLException;
-
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -94,7 +94,7 @@ public class MessageDAOImpli implements MessageDAO{
         } 
         try{
             String stmt = "INSERT INTO message(posted_by, message_text, time_posted_epoch) VALUES(?, ?, ?)";
-            PreparedStatement insertStmt = myConnection.prepareStatement(stmt);
+            PreparedStatement insertStmt = myConnection.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
                 
             insertStmt.setInt(1, message.getPosted_by());
             insertStmt.setString(2, message.getMessage_text());
@@ -107,9 +107,9 @@ public class MessageDAOImpli implements MessageDAO{
             while(addResultSet.next()){
                    
                    int generatedKey = (int)addResultSet.getInt(1);
-                   int posted_by = addResultSet.getInt(2);
-                   String message_text = addResultSet.getString(3);
-                   long time_posted_epoch = addResultSet.getLong(4);
+                   int posted_by = message.getPosted_by();
+                   String message_text = message.getMessage_text();
+                   long time_posted_epoch = message.getTime_posted_epoch();
 
                    Message newMessage = new Message(generatedKey, posted_by, message_text, time_posted_epoch);
                    

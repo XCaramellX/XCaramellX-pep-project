@@ -6,7 +6,7 @@ import DAO.AccountDAOImpli;
 
 public class AccountService {
 
-    private AccountDAO accountDAO;
+    AccountDAO accountDAO;
 
 
     public AccountService(){
@@ -22,20 +22,16 @@ public class AccountService {
     }
 
     public Account addAccount(Account account){
-        if(account.getUsername() != null && account.getUsername().length() <= 4 && account != accountDAO.getAccountById(account.getAccount_id())){
-           return accountDAO.addAccount(account);
-        }
-
-        return null;
+        return accountDAO.addAccount(account);
     }
 
     public Account updateAccount(int account_id, Account account){
-        if(account.getUsername() != null && account.getUsername().length() <= 4){
-            accountDAO.updateAccount(account_id, account);
-            return accountDAO.getAccountById(account_id);
+        if(account == null){
+            return null;
         }
-
-        return null;
+        
+        accountDAO.updateAccount(account_id, account);
+        return accountDAO.getAccountById(account_id);
     }
 
     public Account deleteAccount(int account_id){

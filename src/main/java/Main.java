@@ -4,6 +4,7 @@ import DAO.AccountDAOImpli;
 import DAO.MessageDAO;
 import DAO.MessageDAOImpli;
 import Service.MessageService;
+import Service.AccountService;
 import Model.Account;
 import Model.Message;
 import io.javalin.Javalin;
@@ -23,8 +24,11 @@ public class Main {
 
         AccountDAO account = new AccountDAOImpli();
 
+        AccountService accountService = new AccountService();
+
+        accountService.addAccount(myAccount);
       // account.addAccount(myAccount);
-       account.getAccounts();
+      // account.getAccounts();
       // account.updateAccount(2, fixedAccount);
        //account.getAccounts();
       
