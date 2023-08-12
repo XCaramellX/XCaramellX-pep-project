@@ -17,8 +17,8 @@ public class AccountService {
         return accountDAO.getAccounts();
     }
 
-    public Account getAccountByUserPass(Account account){
-        return accountDAO.getAccountByUserPass(account);
+    public Account getAccountByUser(Account account){
+        return accountDAO.getAccountByUser(account);
     }
 
     public Account addAccount(Account account){

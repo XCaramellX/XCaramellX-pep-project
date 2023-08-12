@@ -24,23 +24,21 @@ public class MessageService {
     }
 
 
-    public Message addMessage(int posted_by, Message message){
-        if(message.getMessage_text() != null && message.getMessage_text().length() < 255 && message
-        .getPosted_by() == posted_by){
-          return  messageDAO.addMessage(message);
-        }
-
+    public Message addMessage(Message message){
+       if(message == null){
         return null;
+       }
+          
+       return  messageDAO.addMessage(message);
     }
 
     public Message updateMessageId(int message_id, Message message){
-        if(message.getMessage_id() == message_id && message.getMessage_text().length() < 255 && 
-        message.getMessage_text() != null){
-            messageDAO.updateMessage(message_id, message);
-            return  messageDAO.getMessageById(message_id);
+        if(message == null){
+            return null;
         }
-
-        return null;
+            
+        messageDAO.updateMessage(message_id, message);
+        return  messageDAO.getMessageById(message_id);
     }
 
     public Message deleteMessageById(int message_id){

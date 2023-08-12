@@ -49,50 +49,39 @@ public class AccountDAOImpli implements AccountDAO{
         return allAccounts;
     };
     
-    public Account addAccountByUserPass(Account account){
+    public Account getAccountByUser(Account account){
         
         if(myConnection == null){
             myConnection = ConnectionUtil.getConnection();
         } 
             try{   
-           
-             String stmt = "INSERT INTO account(username, password) VALUES(?, ?)";
-             String compareStmt = "SELECT * FROM account WHERE username = ? AND password = ?";
-             PreparedStatement  insertStmt = myConnection.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
+    
+             String compareStmt = "SELECT * FROM account WHERE username = ?";
+
              PreparedStatement userStmt = myConnection.prepareStatement(compareStmt);
 
-             insertStmt.setString(1, account.getUsername());
-             insertStmt.setString(2, account.getPassword());
-
              userStmt.setString(1, account.getUsername());
-             userStmt.setString(2, account.getPassword());
-            
              
-             insertStmt.executeUpdate();
-             
-             ResultSet addResultSet = insertStmt.getGeneratedKeys();
-            
-             
+             ResultSet userSet = userStmt.executeQuery();
 
-                    if(addResultSet.next()) 
+                    if(userSet.next()) 
                     {
-                        ResultSet userSet = userStmt.executeQuery();
-                        if(addResultSet.next() == userSet.next()){
-                        int generatedKey = addResultSet.getInt(1);
-                        String user = addResultSet.getString(2);
-                        String pass = addResultSet.getString(3);
+                        if(account.getPassword().equals(userSet.getString(3))){
 
-                        Account newAccount = new Account(generatedKey, user, pass);
+                            int id = userSet.getInt(1);
+                            String user = userSet.getString(2);
+                            String pass = userSet.getString(3);
+
+                            Account newAccount = new Account(id, user, pass);
                     
-                        return newAccount;
+                            return newAccount;
                         }
+                        
                     }
             
         }catch(SQLException e){
             e.printStackTrace();
             }
-        
-            
         
         return null;
     };

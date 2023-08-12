@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Model.Account;
+import Model.Message;
 import Service.AccountService;
+import Service.MessageService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -14,10 +16,12 @@ import io.javalin.http.Context;
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
 public class SocialMediaController {
-  private AccountService accountService;
+    private AccountService accountService;
+    private MessageService messageService;
 
     public SocialMediaController(){
        accountService = new AccountService();
+       messageService = new MessageService();
     }
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
@@ -28,6 +32,7 @@ public class SocialMediaController {
         Javalin app = Javalin.create();
         app.post("/register", this::registerHandler);
         app.post("/login", this::loginHandler);
+        app.post("/messages", this::createMessageHandler);
         return app;
     }
 
@@ -51,12 +56,25 @@ public class SocialMediaController {
     private void loginHandler(Context ctx) throws JsonProcessingException{
         ObjectMapper loginMapper = new ObjectMapper();
         Account account = loginMapper.readValue(ctx.body(), Account.class);
-        Account addAccount = accountService.getAccountByUserPass(account);
+        Account getAccount = accountService.getAccountByUser(account);
 
-        if(addAccount == null){
+        if(getAccount == null){
             ctx.status(401);
         }else{
-            ctx.json(loginMapper.writeValueAsString(addAccount));
+            ctx.json(loginMapper.writeValueAsString(getAccount));
+        }
+
+    }
+
+    private void createMessageHandler(Context ctx) throws JsonProcessingException{
+        ObjectMapper addMessageMapper = new ObjectMapper();
+        Message message = addMessageMapper.readValue(ctx.body(), Message.class);
+        Message addMessage = messageService.addMessage(message);
+
+        if(addMessage == null){
+            ctx.status(400);
+        }else{
+            ctx.json(addMessageMapper.writeValueAsString(addMessage));
         }
 
     }

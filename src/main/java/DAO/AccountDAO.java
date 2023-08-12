@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface AccountDAO {
     List<Account> getAccounts();
-    Account getAccountByUserPass(Account account);
+    Account getAccountByUser(Account account);
     
     Account addAccount(Account account);
 

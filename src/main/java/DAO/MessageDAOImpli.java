@@ -105,7 +105,8 @@ public class MessageDAOImpli implements MessageDAO{
             ResultSet addResultSet = insertStmt.getGeneratedKeys();
         
             while(addResultSet.next()){
-                   
+                if(!message.getMessage_text().isBlank() && message.getMessage_text().length() < 255){
+
                    int generatedKey = (int)addResultSet.getInt(1);
                    int posted_by = message.getPosted_by();
                    String message_text = message.getMessage_text();
@@ -114,6 +115,7 @@ public class MessageDAOImpli implements MessageDAO{
                    Message newMessage = new Message(generatedKey, posted_by, message_text, time_posted_epoch);
                    
                    return newMessage;
+                }
             }
         
             
@@ -133,16 +135,21 @@ public class MessageDAOImpli implements MessageDAO{
            
             String stmt = "UPDATE message SET posted_by = ?, message_text = ?, time_posted_epoch = ? WHERE message_id = ?";
             PreparedStatement updateStmt = myConnection.prepareStatement(stmt);
+            
 
             updateStmt.setInt(1, message.getPosted_by());
             updateStmt.setString(2, message.getMessage_text());
             updateStmt.setLong(3, message.getTime_posted_epoch());
             updateStmt.setInt(4, id);
            
+            ResultSet uSet = updateStmt.executeQuery();
 
-            updateStmt.executeUpdate();
+            if(message.getMessage_id() == uSet.getInt(1) && message.getMessage_text().length() < 255 && 
+            !message.getMessage_text().isBlank()){
 
-            System.out.println("Successfully updated " + 1 + " message");
+                updateStmt.executeUpdate();
+
+            }
         }catch(SQLException e){
                 e.printStackTrace();
             }
