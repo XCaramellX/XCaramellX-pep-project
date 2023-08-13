@@ -65,7 +65,7 @@ public class MessageDAOImpli implements MessageDAO{
              ResultSet sResultSet = select.executeQuery();
 
              while(sResultSet.next()){
-                    
+                
                     int id = sResultSet.getInt(1);
                     int posted_by = sResultSet.getInt(2);
                     String message_text = sResultSet.getString(3);
@@ -160,31 +160,40 @@ public class MessageDAOImpli implements MessageDAO{
     }
 
 
-    public void updateMessage(int id, Message message) {
+    public Message updateMessage(int id, Message message) {
         if(myConnection == null){
             myConnection = ConnectionUtil.getConnection();
         } 
         try{
            
+            String selectStmt = "SELECT * FROM message WHERE message_id = ?";
             String stmt = "UPDATE message SET message_text = ? WHERE message_id = ?";
+            PreparedStatement select = myConnection.prepareStatement(selectStmt);
             PreparedStatement updateStmt = myConnection.prepareStatement(stmt);
-            
+     
+            select.setInt(1, id);
+
             updateStmt.setString(1, message.getMessage_text());
             updateStmt.setInt(2, id);
            
-       
+            ResultSet sSet = select.executeQuery();
+
+            while(sSet.next()){
             if(message.getMessage_text().length() < 255 && !message.getMessage_text().isBlank()){
 
                 updateStmt.executeUpdate();
-
+                Message newMessage = new Message(sSet.getInt(1), sSet.getInt(2), 
+                message.getMessage_text(), sSet.getLong(4));
+                
+                return newMessage;
             }
+        }
         }catch(SQLException e){
                 e.printStackTrace();
             }
-
+        return null;
     }
 
-  
     public Message deleteMessageById(int message_id) {
         
         if(myConnection == null){

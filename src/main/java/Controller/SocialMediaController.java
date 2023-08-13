@@ -34,7 +34,7 @@ public class SocialMediaController {
         Javalin app = Javalin.create();
         app.post("/register", this::registerHandler);
         app.post("/login", this::loginHandler);
-        app.post("/messages", this::createMessageHandler);
+        app.post("/messages", this::postMessageHandler);
         app.delete("/messages/{message_id}", this::deleteMessageByIdHandler);
         app.get("/messages/{message_id}", this::retriveMessageByIdHandler);
         app.get("/accounts/{account_id}/messages", this::retriveMessagesByUserHandler);
@@ -73,7 +73,7 @@ public class SocialMediaController {
 
     }
 
-    private void createMessageHandler(Context ctx) throws JsonProcessingException{
+    private void postMessageHandler(Context ctx) throws JsonProcessingException{
         ObjectMapper addMessageMapper = new ObjectMapper();
         Message message = addMessageMapper.readValue(ctx.body(), Message.class);
         Message addMessage = messageService.addMessage(message);
@@ -113,7 +113,7 @@ public class SocialMediaController {
 
     }
 
-    private void retriveMessagesHandler(Context ctx) throws JsonProcessingException{
+    private void retriveMessagesHandler(Context ctx) {
        
         List<Message> messages = messageService.getAllMessages();
         ctx.json(messages);
@@ -131,11 +131,12 @@ public class SocialMediaController {
     }
 
     private void updateMessagesHandler(Context ctx) throws JsonProcessingException{
+
         ObjectMapper updateMessageMapper = new ObjectMapper();
         int message_id = Integer.valueOf(ctx.pathParam("message_id"));
         Message message = updateMessageMapper.readValue(ctx.body(), Message.class);
         Message updateMessage = messageService.updateMessage(message_id, message);
-
+        
         if(updateMessage == null){
             ctx.status(400);
         }else{

@@ -10,7 +10,7 @@ public interface MessageDAO {
     List<Message> getMessagesByPostedById(int posted_by);
     
     Message addMessage(Message message);
-    void updateMessage(int id, Message message);
+    Message updateMessage(int id, Message message);
     Message deleteMessageById(int message_id);
     
 }

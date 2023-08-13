@@ -39,13 +39,11 @@ public class MessageService {
 
     public Message updateMessage(int message_id, Message message){
 
-        if(message.getMessage_text() == null){
+        if(messageDAO.getMessageById(message_id) == null){
             return null;
         }
             
-        messageDAO.updateMessage(message_id, message);
-
-        return messageDAO.getMessageById(message_id);
+        return messageDAO.updateMessage(message_id, message);
     }
 
     public Message deleteMessageById(int message_id){
