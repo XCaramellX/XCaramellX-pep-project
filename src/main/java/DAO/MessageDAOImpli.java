@@ -50,7 +50,7 @@ public class MessageDAOImpli implements MessageDAO{
 
 
     public Message getMessageById(int messageId) {
-
+        
         if(myConnection == null){
             myConnection = ConnectionUtil.getConnection();
         } 
@@ -73,18 +73,51 @@ public class MessageDAOImpli implements MessageDAO{
 
                     Message newMessage = new Message(id, posted_by, message_text, time_posted_epoch);
                     
-                    System.out.println(newMessage.toString());
                     return newMessage;
              }
 
-            
         }catch(SQLException e){
             e.printStackTrace();
             }
         
-            
-       
         return null;
+    }
+
+    public List<Message> getMessagesByPostedById(int posted_by) {
+
+        List<Message> allMessages = new ArrayList<>();
+
+        if(myConnection == null){
+            myConnection = ConnectionUtil.getConnection();
+        } 
+        try{   
+           
+             String stmt = "SELECT * FROM message WHERE posted_by = ?";
+             PreparedStatement  select = myConnection.prepareStatement(stmt);
+
+             select.setInt(1, posted_by);
+             
+             ResultSet sResultSet = select.executeQuery();
+
+             while(sResultSet.next()){
+                    
+                    int id = sResultSet.getInt(1);
+                    int postedby = sResultSet.getInt(2);
+                    String message_text = sResultSet.getString(3);
+                    long time_posted_epoch = sResultSet.getLong(4);
+
+                    
+                    Message newMessage = new Message(id, postedby, message_text, time_posted_epoch);
+
+                    allMessages.add(newMessage);
+                
+             }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            }
+        
+            return allMessages;
     }
 
 
@@ -133,50 +166,56 @@ public class MessageDAOImpli implements MessageDAO{
         } 
         try{
            
-            String stmt = "UPDATE message SET posted_by = ?, message_text = ?, time_posted_epoch = ? WHERE message_id = ?";
+            String stmt = "UPDATE message SET message_text = ? WHERE message_id = ?";
             PreparedStatement updateStmt = myConnection.prepareStatement(stmt);
             
-
-            updateStmt.setInt(1, message.getPosted_by());
-            updateStmt.setString(2, message.getMessage_text());
-            updateStmt.setLong(3, message.getTime_posted_epoch());
-            updateStmt.setInt(4, id);
+            updateStmt.setString(1, message.getMessage_text());
+            updateStmt.setInt(2, id);
            
-            ResultSet uSet = updateStmt.executeQuery();
-
-            if(message.getMessage_id() == uSet.getInt(1) && message.getMessage_text().length() < 255 && 
-            !message.getMessage_text().isBlank()){
+       
+            if(message.getMessage_text().length() < 255 && !message.getMessage_text().isBlank()){
 
                 updateStmt.executeUpdate();
+
 
             }
         }catch(SQLException e){
                 e.printStackTrace();
             }
+
     }
 
   
     public Message deleteMessageById(int message_id) {
+        Message message = null;
         if(myConnection == null){
             myConnection = ConnectionUtil.getConnection();
         } 
         try{
            
+            String selectStmt = "SELECT * FROM message WHERE message_id = ?";
             String stmt = "DELETE FROM message WHERE message_id = ?";
+        
+            PreparedStatement select = myConnection.prepareStatement(selectStmt);
             PreparedStatement deleteStmt = myConnection.prepareStatement(stmt);
 
-        
+            select.setInt(1, message_id);
             deleteStmt.setInt(1, message_id);
+            
+            ResultSet sSet = select.executeQuery();
 
-            getMessageById(message_id);
+            if(sSet.next()){
+                message = new Message(message_id, sSet.getInt(2), sSet.getString(3), sSet.getLong(4));
+            }
 
             deleteStmt.executeUpdate();
+
             
         }catch(SQLException e){
                 e.printStackTrace();
             }
 
-            return null;
+            return message;
         }
     
     

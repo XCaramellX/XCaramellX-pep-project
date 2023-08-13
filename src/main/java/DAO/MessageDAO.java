@@ -7,6 +7,7 @@ public interface MessageDAO {
 
     List<Message> getMessages();
     Message getMessageById(int message_id);
+    List<Message> getMessagesByPostedById(int posted_by);
     
     Message addMessage(Message message);
     void updateMessage(int id, Message message);

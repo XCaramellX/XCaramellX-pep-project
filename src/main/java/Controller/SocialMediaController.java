@@ -1,5 +1,7 @@
 package Controller;
 
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -33,6 +35,11 @@ public class SocialMediaController {
         app.post("/register", this::registerHandler);
         app.post("/login", this::loginHandler);
         app.post("/messages", this::createMessageHandler);
+        app.delete("/messages/{message_id}", this::deleteMessageByIdHandler);
+        app.get("/messages/{message_id}", this::retriveMessageByIdHandler);
+        app.get("/accounts/{account_id}/messages", this::retriveMessagesByUserHandler);
+        app.get("/messages", this::retriveMessagesHandler);
+        app.patch("/messages/{message_id}", this::updateMessagesHandler);
         return app;
     }
 
@@ -79,5 +86,65 @@ public class SocialMediaController {
 
     }
 
+    private void deleteMessageByIdHandler(Context ctx) throws JsonProcessingException{
+        ObjectMapper deleteMessageMapper = new ObjectMapper();
+        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+        Message deleteMessage = messageService.deleteMessageById(message_id);
+        String returnedMessage = deleteMessageMapper.writeValueAsString(deleteMessage);
+
+        if(returnedMessage == null){
+            ctx.status(200);
+        } else {
+            ctx.json(returnedMessage);
+        }
+        
+ 
+    }
+
+    private void retriveMessageByIdHandler(Context ctx) throws JsonProcessingException{
+        ObjectMapper getMessageMapper = new ObjectMapper();
+        int message_id = Integer.valueOf(ctx.pathParam("message_id"));
+        Message getMessage = messageService.getMessageById(message_id);
+        
+        if(getMessage == null){
+            ctx.status(200);
+        }else{
+            ctx.json(getMessageMapper.writeValueAsString(getMessage));
+        }
+
+    }
+
+    private void retriveMessagesHandler(Context ctx) throws JsonProcessingException{
+       
+        List<Message> messages = messageService.getAllMessages();
+        ctx.json(messages);
+
+    }
+
+    private void retriveMessagesByUserHandler(Context ctx) throws JsonProcessingException{
+
+        ObjectMapper userMessageMapper = new ObjectMapper();
+        int postedBy_id = Integer.valueOf(ctx.pathParam("account_id"));
+        List<Message> postedMessage = messageService.getMessagesByPostedById(postedBy_id);
+
+      
+        ctx.json(userMessageMapper.writeValueAsString(postedMessage));
+        
+
+    }
+
+    private void updateMessagesHandler(Context ctx) throws JsonProcessingException{
+        ObjectMapper updateMessageMapper = new ObjectMapper();
+        int message_id = Integer.valueOf(ctx.pathParam("message_id"));
+        Message message = updateMessageMapper.readValue(ctx.body(), Message.class);
+        Message updateMessage = messageService.updateMessage(message_id, message);
+
+        if(updateMessage == null){
+            ctx.status(400);
+        }else{
+            ctx.json(updateMessageMapper.writeValueAsString(updateMessage));
+        }
+
+    }
 
 }

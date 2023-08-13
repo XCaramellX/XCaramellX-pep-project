@@ -23,28 +23,33 @@ public class MessageService {
        return messageDAO.getMessageById(message_id);
     }
 
+    public List<Message> getMessagesByPostedById(int posted_by){
+
+        return messageDAO.getMessagesByPostedById(posted_by);
+     }
 
     public Message addMessage(Message message){
+        
        if(message == null){
         return null;
        }
           
-       return  messageDAO.addMessage(message);
+       return messageDAO.addMessage(message);
     }
 
-    public Message updateMessageId(int message_id, Message message){
+    public Message updateMessage(int message_id, Message message){
+
         if(message == null){
             return null;
         }
             
         messageDAO.updateMessage(message_id, message);
-        return  messageDAO.getMessageById(message_id);
+
+        return messageDAO.getMessageById(message_id);
     }
 
     public Message deleteMessageById(int message_id){
-        if(messageDAO.deleteMessageById(message_id) == null){
-            return null;
-        }
+
        return messageDAO.deleteMessageById(message_id);
     }
     
