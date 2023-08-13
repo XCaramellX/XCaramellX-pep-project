@@ -138,7 +138,7 @@ public class SocialMediaController {
         Message updateMessage = messageService.updateMessage(message_id, message);
         
         if(updateMessage == null){
-            ctx.status(401);
+            ctx.status(400);
         }else{
             ctx.json(updateMessageMapper.writeValueAsString(updateMessage));
         }
