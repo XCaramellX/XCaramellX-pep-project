@@ -29,7 +29,7 @@ public class MessageService {
      }
 
     public Message addMessage(Message message){
-        
+
        if(message == null){
         return null;
        }
@@ -39,7 +39,7 @@ public class MessageService {
 
     public Message updateMessage(int message_id, Message message){
 
-        if(message == null){
+        if(message.getMessage_text() == null){
             return null;
         }
             

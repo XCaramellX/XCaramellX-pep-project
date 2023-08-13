@@ -87,18 +87,17 @@ public class SocialMediaController {
     }
 
     private void deleteMessageByIdHandler(Context ctx) throws JsonProcessingException{
+
         ObjectMapper deleteMessageMapper = new ObjectMapper();
         int message_id = Integer.parseInt(ctx.pathParam("message_id"));
         Message deleteMessage = messageService.deleteMessageById(message_id);
-        String returnedMessage = deleteMessageMapper.writeValueAsString(deleteMessage);
-
-        if(returnedMessage == null){
+        
+        if(deleteMessage == null){
             ctx.status(200);
-        } else {
-            ctx.json(returnedMessage);
+        }else {
+            ctx.json(deleteMessageMapper.writeValueAsString(deleteMessage));
         }
         
- 
     }
 
     private void retriveMessageByIdHandler(Context ctx) throws JsonProcessingException{
@@ -126,11 +125,9 @@ public class SocialMediaController {
         ObjectMapper userMessageMapper = new ObjectMapper();
         int postedBy_id = Integer.valueOf(ctx.pathParam("account_id"));
         List<Message> postedMessage = messageService.getMessagesByPostedById(postedBy_id);
-
       
         ctx.json(userMessageMapper.writeValueAsString(postedMessage));
         
-
     }
 
     private void updateMessagesHandler(Context ctx) throws JsonProcessingException{

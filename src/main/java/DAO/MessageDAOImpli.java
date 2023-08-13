@@ -177,7 +177,6 @@ public class MessageDAOImpli implements MessageDAO{
 
                 updateStmt.executeUpdate();
 
-
             }
         }catch(SQLException e){
                 e.printStackTrace();
@@ -187,7 +186,7 @@ public class MessageDAOImpli implements MessageDAO{
 
   
     public Message deleteMessageById(int message_id) {
-        Message message = null;
+        
         if(myConnection == null){
             myConnection = ConnectionUtil.getConnection();
         } 
@@ -203,20 +202,24 @@ public class MessageDAOImpli implements MessageDAO{
             deleteStmt.setInt(1, message_id);
             
             ResultSet sSet = select.executeQuery();
+           
+             if(sSet.next()){
+               
+                Message message = new Message(sSet.getInt(1), sSet.getInt(2), sSet.getString(3), sSet.getLong(4));
 
-            if(sSet.next()){
-                message = new Message(message_id, sSet.getInt(2), sSet.getString(3), sSet.getLong(4));
+                return message;
+        
             }
-
-            deleteStmt.executeUpdate();
-
             
+            deleteStmt.executeUpdate();
+            
+
         }catch(SQLException e){
                 e.printStackTrace();
             }
 
-            return message;
+            return null;
+            
         }
-    
     
 }
